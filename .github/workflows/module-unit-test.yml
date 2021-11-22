@@ -1,0 +1,28 @@
+name: 'terraform module unit test'
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  module_unit_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.10
+        terraform_wrapper: false
+    - uses: actions/setup-go@v2
+      with:
+        go-version: '1.17.2'
+    - run: |
+        go mod init github.com/angelqyguo/tfmodule-azurerm-lbvmss
+        go mod tidy
+        go fmt ./... && go vet ./...
+        go clean -testcache
+        go test -run Test_ ./... -timeout 1h -v
+      env:
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
