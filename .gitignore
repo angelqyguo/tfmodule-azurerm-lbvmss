@@ -1,0 +1,7 @@
+# terratest related files
+go.mod
+go.sum
+.terraform
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
