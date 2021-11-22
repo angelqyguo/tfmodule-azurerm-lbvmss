@@ -1,6 +1,8 @@
 resource "random_password" "vmadmin_password" {
   length           = 16
   special          = true
+  lower            = true
+  upper            = true
   override_special = "_%@"
 }
 
@@ -99,4 +101,3 @@ resource "azurerm_linux_virtual_machine_scale_set" "webstack" {
     }
   }
 }
-# test comment
